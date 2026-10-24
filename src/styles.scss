@@ -1,0 +1,75 @@
+@use '@angular/material' as mat;
+
+html {
+  color-scheme: light dark;
+  @include mat.theme((
+    color: (
+      primary: mat.$orange-palette,
+      tertiary: mat.$rose-palette,
+    ),
+    typography: Nunito,
+    density: 0,
+  ));
+
+  // Rounder, chunkier Material buttons.
+  @include mat.button-overrides((
+    filled-container-shape: 999px,
+    outlined-container-shape: 999px,
+    filled-container-height: 44px,
+    outlined-container-height: 44px,
+  ));
+  @include mat.dialog-overrides((
+    container-shape: 28px,
+  ));
+}
+
+// App-level tokens for the warm, friendly look.
+:root {
+  --app-bg: #fff7ef;
+  --app-bg-accent: #ffe7d1;
+  --app-surface: #ffffff;
+  --app-text: #3b2f2a;
+  --app-muted: #8a7468;
+  --app-border: #f1e1d4;
+  --app-shadow: 0 8px 24px rgba(146, 92, 52, 0.12);
+  --app-shadow-hover: 0 14px 32px rgba(146, 92, 52, 0.2);
+  --app-accent: #ff8a3d;
+  --app-accent-text: #ffffff;
+  --app-success: #3fb67b;
+
+  @media (prefers-color-scheme: dark) {
+    --app-bg: #1f1a17;
+    --app-bg-accent: #2c221c;
+    --app-surface: #2a231f;
+    --app-text: #f6ebe3;
+    --app-muted: #b9a69a;
+    --app-border: #3a2f29;
+    --app-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    --app-shadow-hover: 0 14px 32px rgba(0, 0, 0, 0.5);
+  }
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Nunito, 'Segoe UI', sans-serif;
+  color: var(--app-text);
+  background:
+    radial-gradient(circle at 10% -10%, var(--app-bg-accent) 0, transparent 45%),
+    radial-gradient(circle at 110% 10%, var(--app-bg-accent) 0, transparent 40%),
+    var(--app-bg);
+  background-attachment: fixed;
+}
+
+.material-symbols-rounded {
+  font-variation-settings: 'FILL' 1;
+}
+
+.mat-mdc-menu-item.danger,
+.mat-mdc-menu-item.danger .mat-icon {
+  color: #e5484d;
+}

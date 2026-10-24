@@ -1,0 +1,65 @@
+<h2 mat-dialog-title>{{ data.isNew ? 'New card' : 'Edit card' }}</h2>
+
+<mat-dialog-content>
+  <div class="preview" [style.background]="color()" [style.color]="textColor()">
+    <mat-icon>{{ icon() }}</mat-icon>
+    <span [class.placeholder]="!title()">{{ title() || 'Your reminder' }}</span>
+  </div>
+
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>Title</mat-label>
+    <input
+      matInput
+      maxlength="40"
+      cdkFocusInitial
+      [ngModel]="title()"
+      (ngModelChange)="title.set($event)"
+      (keydown.enter)="save()"
+      placeholder="e.g. Turn off lights"
+    />
+    <mat-hint align="end">{{ title().length }}/40</mat-hint>
+  </mat-form-field>
+
+  <h3>Color</h3>
+  <div class="swatches" role="radiogroup" aria-label="Card color">
+    @for (c of colors; track c) {
+      <button
+        type="button"
+        class="swatch"
+        role="radio"
+        [attr.aria-checked]="c === color()"
+        [attr.aria-label]="c"
+        [class.selected]="c === color()"
+        [style.background]="c"
+        (click)="color.set(c)"
+      ></button>
+    }
+    <label class="swatch custom" matTooltip="Custom color">
+      <mat-icon>palette</mat-icon>
+      <input type="color" [value]="color()" (input)="color.set($any($event.target).value)" />
+    </label>
+  </div>
+
+  <h3>Icon</h3>
+  <div class="icons" role="radiogroup" aria-label="Card icon">
+    @for (i of icons; track i.name) {
+      <button
+        type="button"
+        class="icon-option"
+        role="radio"
+        [attr.aria-checked]="i.name === icon()"
+        [attr.aria-label]="i.label"
+        [matTooltip]="i.label"
+        [class.selected]="i.name === icon()"
+        (click)="icon.set(i.name)"
+      >
+        <mat-icon>{{ i.name }}</mat-icon>
+      </button>
+    }
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-flat-button [disabled]="!canSave()" (click)="save()">Save</button>
+</mat-dialog-actions>

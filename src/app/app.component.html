@@ -1,0 +1,82 @@
+<header class="topbar">
+  <div class="brand">
+    <div class="logo"><mat-icon>cottage</mat-icon></div>
+    <div>
+      <p class="greeting">{{ greeting }} 👋</p>
+      <h1>Don't Forget</h1>
+    </div>
+  </div>
+
+  <div class="top-actions">
+    @if (cards().length) {
+      <button mat-stroked-button class="reset-btn" [matMenuTriggerFor]="resetMenu">
+        <mat-icon>restart_alt</mat-icon>
+        Reset
+      </button>
+    }
+    <button mat-flat-button class="add-btn" (click)="addCard()">
+      <mat-icon>add</mat-icon>
+      Add card
+    </button>
+  </div>
+
+  <mat-menu #resetMenu="matMenu" xPosition="before">
+    <button mat-menu-item (click)="uncheckAll()" [disabled]="checkedCount() === 0">
+      <mat-icon>remove_done</mat-icon>
+      <span>Uncheck all cards</span>
+    </button>
+    <button mat-menu-item class="danger" (click)="resetEverything()">
+      <mat-icon>delete_sweep</mat-icon>
+      <span>Delete everything</span>
+    </button>
+  </mat-menu>
+</header>
+
+<main>
+  @if (!ready()) {
+    <!-- Reading saved cards from storage; this is near-instant. -->
+  } @else if (cards().length) {
+    <section class="progress-card" [class.complete]="allChecked()">
+      <div class="progress-text">
+        @if (allChecked()) {
+          <strong>All done — you're good to go! 🎉</strong>
+        } @else {
+          <strong>{{ checkedCount() }} of {{ cards().length }} checked</strong>
+          <span>Keep going, you've got this.</span>
+        }
+      </div>
+      <div class="bar" role="progressbar" [attr.aria-valuenow]="progress()" aria-valuemin="0" aria-valuemax="100">
+        <div class="fill" [style.width.%]="progress()"></div>
+      </div>
+    </section>
+
+    <section class="grid">
+      @for (card of cards(); track card.id) {
+        <app-reminder-card
+          [card]="card"
+          (toggled)="toggleCard(card)"
+          (edit)="editCard(card)"
+          (remove)="removeCard(card)"
+        />
+      }
+      <button class="add-tile" (click)="addCard()">
+        <mat-icon>add_circle</mat-icon>
+        <span>Add another</span>
+      </button>
+    </section>
+  } @else {
+    <section class="empty">
+      <div class="empty-art">
+        <mat-icon class="a">lightbulb</mat-icon>
+        <mat-icon class="b">key</mat-icon>
+        <mat-icon class="c">faucet</mat-icon>
+      </div>
+      <h2>Nothing to remember yet</h2>
+      <p>Add little cards like <em>"Turn off lights"</em>, <em>"Check sink"</em> or <em>"Get keys"</em> and tick them off before you head out.</p>
+      <button mat-flat-button class="add-btn" (click)="addCard()">
+        <mat-icon>add</mat-icon>
+        Add your first card
+      </button>
+    </section>
+  }
+</main>

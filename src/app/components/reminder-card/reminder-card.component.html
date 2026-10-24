@@ -1,0 +1,34 @@
+<article
+  class="card"
+  [class.checked]="card().on"
+  [style.--card-color]="card().color"
+  [style.--card-text]="textColor()"
+>
+  <header>
+    <div class="icon-badge">
+      <mat-icon>{{ card().icon }}</mat-icon>
+      @if (card().on) {
+        <span class="done-dot"><mat-icon>check</mat-icon></span>
+      }
+    </div>
+    <div class="actions">
+      <button mat-icon-button matTooltip="Edit" aria-label="Edit card" (click)="edit.emit()">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Delete" aria-label="Delete card" (click)="remove.emit()">
+        <mat-icon>delete_outline</mat-icon>
+      </button>
+    </div>
+  </header>
+
+  <h2 class="title">{{ card().title }}</h2>
+
+  <footer>
+    <span class="state">{{ card().on ? 'Checked' : 'Unchecked' }}</span>
+    <mat-slide-toggle
+      [checked]="card().on"
+      (change)="toggled.emit()"
+      [attr.aria-label]="'Mark ' + card().title + ' as checked'"
+    ></mat-slide-toggle>
+  </footer>
+</article>
